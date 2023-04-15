@@ -15,7 +15,7 @@ import UserNotifications
 struct FontListerApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(isSidebarVisible: State(wrappedValue: true), sidebarView: { _ in })
+            ContentView(isSidebarVisible: State(wrappedValue: true), isDirectoryListActive: .constant(false), sidebarView: { _ in }, onSearchTextChange: {_ in })
         }
         .commands {
             SidebarCommands()
@@ -27,6 +27,7 @@ struct FontListerApp: App {
         .windowStyle(HiddenTitleBarWindowStyle())
     }
 }
+
 
 class TitleTextField: NSTextField {
     override init(frame frameRect: NSRect) {
@@ -43,7 +44,8 @@ class TitleTextField: NSTextField {
 }
 
 
-struct ContentView: View {
+struct ContentView:
+    View {
     @State private var fontInfo: [FontInfo] = []
     @State private var fontSize: CGFloat = 20
     @State private var fontDirectory: URL?
@@ -67,18 +69,32 @@ struct ContentView: View {
     @State private var selectedFontFamily: String? = ""
     @ObservedObject var fontLoader: FontLoader
     @State private var fontsLoaded: Bool = false
+    @Binding var isDirectoryListActive: Bool
+    @State private var selectedFont: String = ""
+    @State private var nonOptionalSelectedFontFamily: String = ""
     
     
+    let columns: [GridItem] = Array(repeating: GridItem(.flexible()), count: 2)
+    
+    @State private var sidebarWidth: CGFloat = 500
     
     
     let sidebarView: (String) -> Void
+    let onSearchTextChange: (String) -> Void
     
-    init(isSidebarVisible: State<Bool>, sidebarView: @escaping (String) -> Void) {
+    
+    
+    
+    init(isSidebarVisible: State<Bool>, isDirectoryListActive: Binding<Bool>, sidebarView: @escaping (String) -> Void, onSearchTextChange: @escaping (String) -> Void) {
         _isSidebarVisible = isSidebarVisible
+        _isDirectoryListActive = isDirectoryListActive
         self.sidebarView = sidebarView
+        self.onSearchTextChange = onSearchTextChange
         self.fontLoader = FontLoader()
-        self.updateFontDirectories()
+        //self.updateFontDirectories()
+        
     }
+    
     
     
     private func updateFontDirectories() {
@@ -102,23 +118,6 @@ struct ContentView: View {
         
         fontLoader.loadFontsFromDirectories(fontDirectories)
     }
-    
-    private func filterFonts(_ searchText: String) -> [(path: String, fontFamily: String)] {
-        let filteredFonts = fontInfo.filter { font in
-            let fontFamily = font.fontFamily
-            if !searchText.isEmpty && !fontFamily.localizedCaseInsensitiveContains(searchText) {
-                print("Filtering out font \(fontFamily) because it doesn't match search text: \(searchText)")
-                return false
-            }
-            return true
-        }
-        
-        return filteredFonts.sorted(by: { $0.fontFamily < $1.fontFamily }).map {
-            (path: $0.path, fontFamily: $0.fontFamily)
-        }
-    }
-    
-    
     
     private func showCustomDirectoryOpenPanel() {
         print("Load NSOpenPanel")
@@ -196,11 +195,7 @@ struct ContentView: View {
         }
     }
     
-    private func copyToClipboard(_path: String) {
-        let pasteboard = NSPasteboard.general
-        pasteboard.declareTypes([.string], owner: nil)
-        pasteboard.setString(_path, forType: .string)
-    }
+    
     
     private func filteredFontTuples(_ searchText: String) -> [(path: String, fontFamily: String)] {
         let filteredFonts = fontInfo.filter { font in
@@ -228,128 +223,171 @@ struct ContentView: View {
         }
     }
     
-    
-    var body: some View {
-        VStack {
-            SidebarView(
-                bindings: SidebarBindings(
-                    searchText: .constant(""),
-                    fontSize: $fontSize,
-                    customPreviewText: $customPreviewText,
-                    fontDirectories: $fontDirectories,
-                    pressedBox: $pressedBox,
-                    filterFonts: filteredFontInfo,
-                    copyToClipboard: copyToClipboard,
-                    showOpenPanel: showOpenPanel,
-                    updateFontDirectories: updateFontDirectories,
-                    showCustomDirectoryOpenPanel: showCustomDirectoryOpenPanel,
-                    removeCustomDirectory: removeCustomDirectory,
-                    selectedStyleBinding: $selectedStyles,
-                    systemDirectories: $systemDirectories,
-                    customDirectories: $customDirectories,
-                    selectedFontFamily: $selectedFontFamily,
-                    fontLoader: fontLoader,
-                    selectedFontStyle: $selectedStyles,
-                    fontInfoManager: FontInfoManager(),
-                    onSearchTextChange: { searchText in
-                        self.searchText = searchText
-                    }
-                ),
-                isSidebarVisible: $isSidebarVisible,
-                fontLoader: fontLoader,
-                customPreviewText: $customPreviewText
-            )
-            
-            // Add FontBox here
-            Text("Filtered fonts: \(fontInfoManager.fontInfo.filter { $0.fontFamily.localizedCaseInsensitiveContains(searchText) }.count)")
-
-            
-            let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: 20), count: 2)
-            LazyVGrid(columns: columns, spacing: 20){
-                Text("I am  not a scroll view lol")
-                ForEach(fontLoader.fontInfo.filter { $0.fontFamily.localizedCaseInsensitiveContains($searchText.wrappedValue) }, id: \.self) { fontInfo in
-                    FontBox(path: fontInfo.path, fontFamily: fontInfo.fontFamily, fontSize: $fontSize, onPress: {}, pressedBox: $pressedBox, customPreviewText: $customPreviewText.wrappedValue, selectedFontStyle: $selectedStyles, systemDirectories: $systemDirectories, customDirectories: $customDirectories)
-                    
-                        .onAppear {
-                            // Add a print statement here
-                            print("Inside ForEach loop for font family: \(fontInfo.fontFamily)")
-                        }
-                }
-            }
-
-        }
-        .onChange(of: fontInfo) { newFontInfo in
-            fontInfoManager.fontInfo = newFontInfo
-            print("fontInfoManager.fontInfo updated: \(fontInfoManager.fontInfo)")
-        }
-    }
-
-    
-    
-    
-    
-    struct TitleView: NSViewRepresentable {
-        let title: String
-        let fontSize: CGFloat
-        
-        init(title: String, fontSize: CGFloat) {
-            self.title = title
-            self.fontSize = fontSize
-        }
-        
-        func makeNSView(context: Context) -> TitleTextField {
-            makeTitleTextField(title: title, fontSize: fontSize)
-        }
-        
-        func updateNSView(_ nsView: TitleTextField, context: Context) {
-            nsView.stringValue = title
-            nsView.font = NSFont.systemFont(ofSize: fontSize, weight: .bold)
-            nsView.sizeToFit()
-        }
-        
-        private func makeTitleTextField(title: String, fontSize: CGFloat) -> TitleTextField {
-            let textField = TitleTextField()
-            textField.stringValue = title
-            textField.font = NSFont.systemFont(ofSize: fontSize, weight: .bold)
-            textField.sizeToFit()
-            return textField
-        }
-    }
-    
-    private func getUniqueDirectories(fontInfo: [(path: String, fontFamily: String)]) -> [String] {
+    func getUniqueDirectories(fontInfo: [(path: String, fontFamily: String)]) -> [String] {
         let directories = fontInfo.map { $0.path }.map { URL(fileURLWithPath: $0).deletingLastPathComponent().path }
         return Array(Set(directories)).sorted()
     }
-}
-
-class FontLoader: ObservableObject {
-    @Published var fontInfo: [FontInfo] = []
-    @Published var fontsLoaded: Bool = false
+    
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            ContentView(isSidebarVisible: State(wrappedValue: true), isDirectoryListActive: .constant(false), sidebarView: { _ in }, onSearchTextChange: { _ in })
+        }
+    }
     
     
     
     
-    func loadFontsFromDirectories(_ fontDirectories: [URL]) {
-        print("loadFontsFromDirectories called")
-        DispatchQueue.global(qos: .userInitiated).async {
-            var newFontInfo: [FontInfo] = []
-            
-            for directory in fontDirectories {
-                print("Loading fonts from directory: \(directory)")
-                newFontInfo += fontsInDirectory(directory: directory)
+    
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                SidebarView(
+                    bindings: SidebarBindings(
+                        searchText: $searchText,
+                        fontSize: $fontSize,
+                        customPreviewText: $customPreviewText,
+                        fontDirectories: $fontDirectories,
+                        pressedBox: $pressedBox,
+                        filterFonts: filteredFontInfo,
+                        showOpenPanel: showOpenPanel,
+                        updateFontDirectories: updateFontDirectories,
+                        showCustomDirectoryOpenPanel: showCustomDirectoryOpenPanel,
+                        removeCustomDirectory: removeCustomDirectory,
+                        selectedStyleBinding: $selectedStyles,
+                        systemDirectories: systemDirectories,
+                        customDirectories: customDirectories,
+                        selectedFontFamily: $selectedFontFamily,
+                        fontLoader: fontLoader,
+                        selectedFontStyle: $selectedStyles,
+                        fontInfoManager: FontInfoManager(),
+                        onSearchTextChange: { searchText in
+                            self.searchText = searchText
+                        }, selectedFont: Binding<String>(
+                            get: { selectedFontFamily ?? "" },
+                            set: { nonOptionalSelectedFontFamily = $0 }
+                        )
+                    ),
+                    isSidebarVisible: $isSidebarVisible,
+                    fontLoader: fontLoader,
+                    customPreviewText: $customPreviewText,
+                    isDirectoryListActive: $isDirectoryListActive,
+                    selectedFont: $selectedFont,
+                    sidebarWidth: $sidebarWidth
+                )
             }
             
-            DispatchQueue.main.async {
-                self.fontInfo = newFontInfo
-                self.fontsLoaded = true
-                print("Loaded font info: \(self.fontInfo)")
+            
+            
+            
+            .toolbar {
+                ToolbarItem {
+                    TitleView(title: "TypeBox", fontSize: 20)
+                        .padding()
+                }
+                
+                ToolbarItem {
+                    
+                    
+                }
+                
+                ToolbarItem(placement: .navigation) {
+                    Button(action: {
+                        isSidebarVisible.toggle()
+                    }) {
+                        Image(systemName: "sidebar.leading")
+                    }
+                }
+                
+            }
+            
+            
+            VStack {
+                
+                VStack {
+                    
+                    HStack {
+                        Spacer()
+                        Slider(value: $fontSize, in: 10...50)
+                            .frame(width: 150)
+                            .padding(.trailing, 12)
+                        
+                        Text(" \(Int(fontSize)) px")
+                            .multilineTextAlignment(.trailing)
+                            .minimumScaleFactor(0.5)
+                            .padding(.trailing, 32.0)
+                    }
+                    
+                    .toolbar  {
+                        ToolbarItem(placement: .principal)  {
+                            TextField("Custom Preview Text", text: $customPreviewText)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                .frame(width: 200)
+                                .padding()
+                        }
+                        
+                        
+                        
+                        
+                        
+                        ToolbarItemGroup {
+                            Spacer()
+                            SearchBar(searchText: $searchText, selectedFont: $selectedFont, onSearchTextChange: { searchText in
+                                print("Search text changed: \(searchText)")
+                                onSearchTextChange(searchText)
+                            })
+                            .onChange(of: selectedFont) { newValue in
+                                searchText = newValue
+                            }
+                            Button(action: {
+                                showOpenPanel() { newFontInfo in
+                                    fontInfoManager.fontInfo = newFontInfo.map { FontInfo(path: $0.path, fontFamily: $0.fontFamily) }
+                                }
+                            }) {
+                                Image(systemName: "folder").help("Select Folder")
+                            }
+                            
+                        }
+                    }
+                }
+                
+                
+                
+                GeometryReader { geometry in
+                    
+                    let uniqueFilteredFonts: [FontInfo] = {
+                        let filteredFonts = fontLoader.fontInfo.filter {
+                            searchText.isEmpty || $0.fontFamily.localizedCaseInsensitiveContains(searchText)
+                        }
+                        let uniqueFonts = fontInfoManager.uniqueAndSortedFontInfos(filteredFonts)
+                        return uniqueFonts
+                    }()
+                    
+                    
+                    let minColumnWidth: CGFloat = 300
+                    let columnSpacing: CGFloat = 20
+                    let numberOfColumns = max(1, Int((geometry.size.width - columnSpacing) / (minColumnWidth + columnSpacing)))
+                    
+                    let columns: [GridItem] = Array(repeating: GridItem(.flexible(), spacing: columnSpacing), count: numberOfColumns)
+                    
+                    
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: 20) {
+                            ForEach(uniqueFilteredFonts, id: \.self) { fontInfo in
+                                FontBox(path: fontInfo.path, fontFamily: fontInfo.fontFamily, fontSize: $fontSize, onPress: {}, pressedBox: $pressedBox, customPreviewText: customPreviewText, selectedFontStyle: $selectedStyles, systemDirectories: $systemDirectories, customDirectories: $customDirectories)
+                            }
+                        }
+                        .padding(.horizontal, geometry.size.width * 0.1)
+                    }
+                }
+                
+                .onChange(of: fontInfo) { newFontInfo in
+                    fontInfoManager.fontInfo = newFontInfo
+                    print("fontInfoManager.fontInfo updated: \(fontInfoManager.fontInfo)")
+                }
             }
         }
     }
+    
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView(isSidebarVisible: State(wrappedValue: true), sidebarView: { _ in })
-    }
-}

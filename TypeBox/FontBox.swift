@@ -1,4 +1,3 @@
-//
 //  FontBox.swift
 //  TypeBox
 //
@@ -11,7 +10,6 @@ import CoreText
 import AppKit
 import Combine
 import UserNotifications
-
 
 struct FontBox: View {
     let path: String
@@ -29,11 +27,15 @@ struct FontBox: View {
     // Add the missing variables with appropriate types
     @Binding var systemDirectories: [URL]
     @Binding var customDirectories: [URL]
-
     
+    private func copyToClipboard(_path: String) {
+        let pasteboard = NSPasteboard.general
+        pasteboard.declareTypes([.string], owner: nil)
+        pasteboard.setString(_path, forType: .string)
+    }
+
     var body: some View {
         VStack {
-            Text("Im I getting iterated?")
             Text(!customPreviewText.isEmpty ? customPreviewText : fontFamily)
                 .font(.custom(fontFamily, size: fontSize))
                 .fontWeight(selectedFontStyle.uiFontSymbolicTrait.contains(.traitBold) ? .bold : .regular)
@@ -47,26 +49,36 @@ struct FontBox: View {
                 .padding(.all, 14.0)
         }
         .frame(maxWidth: .infinity)
-         .padding(.all, 6.0)
-         .background(pressedBox == path ? Color(.lightGray) : Color(.clear))
-         .onTapGesture {
-             // Your onTapGesture code here...
-         }
-         .onChange(of: selectedFontStyle) { _ in
-             print("Selected font style updated to: \(selectedFontStyle.rawValue), uiFontSymbolicTrait: \(selectedFontStyle.uiFontSymbolicTrait.rawValue)")
-             print("Inside onChange of FontBox for font family: \(fontFamily)")
-         }
-         .onAppear {
-             print("onAppear Font family: \(fontFamily), onAppear Font path: \(path)")
-             print("Inside onAppear of FontBox for font family: \(fontFamily)")
-             print("Custom preview text: \(customPreviewText)")
-             print("Selected font style raw value: \(selectedFontStyle.rawValue)")
-             print("Inside second onAppear of FontBox for font family: \(fontFamily)")
-             print("FontBox onAppear for font family: \(fontFamily)")
-         }
-     }
-
- }
+        .padding(.all, 6.0)
+        .background(pressedBox == path ? Color(.lightGray) : Color(.clear))
+        .gesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in
+                    withAnimation {
+                        pressedBox = path
+                    }
+                }
+                .onEnded { _ in
+                    withAnimation {
+                        pressedBox = nil
+                    }
+                    copyToClipboard(_path: path)
+                    onPress()
+                }
+        )
 
 
-
+        .onChange(of: selectedFontStyle) { _ in
+            print("Selected font style updated to: \(selectedFontStyle.rawValue), uiFontSymbolicTrait: \(selectedFontStyle.uiFontSymbolicTrait.rawValue)")
+            print("Inside onChange of FontBox for font family: \(fontFamily)")
+        }
+        .onAppear {
+            print("onAppear Font family: \(fontFamily), onAppear Font path: \(path)")
+            print("Inside onAppear of FontBox for font family: \(fontFamily)")
+            print("Custom preview text: \(customPreviewText)")
+            print("Selected font style raw value: \(selectedFontStyle.rawValue)")
+            print("Inside second onAppear of FontBox for font family: \(fontFamily)")
+            print("FontBox onAppear for font family: \(fontFamily)")
+        }
+    }
+}

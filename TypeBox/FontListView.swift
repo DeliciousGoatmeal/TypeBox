@@ -16,9 +16,9 @@ struct FontListView: View {
     @Binding var selectedFontStyle: FontStyle
     @Binding var systemDirectories: [URL]
     @Binding var customDirectories: [URL]
-
+    
     var body: some View {
-        LazyVStack {
+        VStack {
             ForEach(fontInfos.filter { $0.fontFamily.localizedCaseInsensitiveContains(searchText) }, id: \.self) { fontInfo in
                 FontBox(path: fontInfo.path, fontFamily: fontInfo.fontFamily, fontSize: $fontSize, onPress: {}, pressedBox: $pressedBox, customPreviewText: customPreviewText, selectedFontStyle: $selectedFontStyle, systemDirectories: $systemDirectories, customDirectories: $customDirectories)
             }

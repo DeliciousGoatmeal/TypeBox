@@ -71,3 +71,15 @@ extension FontListerApp {
         return textField
     }
 }
+
+extension FontDirectory {
+    func fonts() -> [FontInfo] {
+        return fontsInDirectory(directory: self.url)
+    }
+}
+
+extension Array where Element == URL {
+    func toFontDirectories() -> [FontDirectory] {
+        return self.map { FontDirectory(path: $0.path) }
+    }
+}

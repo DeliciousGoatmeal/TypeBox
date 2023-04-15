@@ -13,12 +13,10 @@ import Combine
 
 
 class FontInfoManager {
+    @StateObject private var customDirectoriesManager = CustomDirectoriesManager()
     
-    var fontInfo: [FontInfo] {
-        didSet {
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "fontInfoManagerUpdated"), object: self)
-        }
-    }
+    @Published var fontInfo: [FontInfo]
+    
     
     init(fontInfo: [FontInfo] = []) {
         self.fontInfo = fontInfo
@@ -31,52 +29,71 @@ class FontInfoManager {
                 let newFontInfo = fontsInDirectory(directory: directory)
                 allFontInfo += newFontInfo
             }
+            
             DispatchQueue.main.async {
-                self.fontInfo = allFontInfo
+                self.fontInfo = Array(Set(allFontInfo)).sorted { $0.fontFamily < $1.fontFamily }
+            }
+        }
+    }
+
+
+    
+    func uniqueAndSortedFontInfos(_ fontInfos: [FontInfo]) -> [FontInfo] {
+        var uniqueFontInfos: [FontInfo] = []
+        var seenFontFamilies: Set<String> = []
+
+        for fontInfo in fontInfos.sorted(by: { $0.fontFamily < $1.fontFamily }) {
+            if !seenFontFamilies.contains(fontInfo.fontFamily) {
+                uniqueFontInfos.append(fontInfo)
+                seenFontFamilies.insert(fontInfo.fontFamily)
+            }
+        }
+        return uniqueFontInfos
+    }
+
+    
+}
+
+
+
+
+
+class CustomDirectoriesManager: ObservableObject {
+    @Published var customDirectories: [CustomDirectory] {
+         didSet {
+             UserDefaults.standard.set(customDirectories.map { $0.url.path }, forKey: "customDirectories")
+         }
+     }
+
+     init() {
+         if let customDirectoryPaths = UserDefaults.standard.stringArray(forKey: "customDirectories") {
+             customDirectories = customDirectoryPaths.map { CustomDirectory(url: URL(fileURLWithPath: $0)) }
+         } else {
+             customDirectories = []
+         }
+     }
+
+     func addDirectory(_ directory: URL) {
+         customDirectories.append(CustomDirectory(url: directory))
+     }
+    
+    func showDirectoryPicker() {
+        let openPanel = NSOpenPanel()
+        openPanel.title = "Choose a custom directory"
+        openPanel.prompt = "Choose"
+        openPanel.allowsMultipleSelection = false
+        openPanel.canChooseFiles = false
+        openPanel.canChooseDirectories = true
+        
+        openPanel.begin { response in
+            if response == .OK, let url = openPanel.url {
+                self.addDirectory(url)
             }
         }
     }
 }
 
 
-
-
-struct CustomDirectoriesManager {
-    var customDirectories: [URL] {
-        didSet {
-            UserDefaults.standard.set(customDirectories.map { $0.path }, forKey: "customDirectories")
-        }
-    }
-    
-    init() {
-        if let customDirectoryPaths = UserDefaults.standard.stringArray(forKey: "customDirectories") {
-            customDirectories = customDirectoryPaths.map { URL(fileURLWithPath: $0) }
-        } else {
-            customDirectories = []
-        }
-    }
-}
-
-struct FontDirectoriesManager {
-
-    var fontDirectories: [URL] {
-        let defaultDirectories = [
-            FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!.appendingPathComponent("Fonts"),
-            FileManager.default.urls(for: .libraryDirectory, in: .localDomainMask).first!.appendingPathComponent("Fonts"),
-            FileManager.default.urls(for: .libraryDirectory, in: .systemDomainMask).first!.appendingPathComponent("Fonts"),
-            //FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!.appendingPathComponent("Adobe/CoreSync/plugins/livetype/.r")
-        ]
-
-        return Array(Set(defaultDirectories + customDirectories)) // Remove duplicates
-    }
-
-    private var customDirectories: [URL] {
-        if let customDirectoryPaths = UserDefaults.standard.stringArray(forKey: "customDirectories") {
-            return customDirectoryPaths.map { URL(fileURLWithPath: $0) }
-        }
-        return []
-    }
-}
 
 
 func getFontInfo(from fontDirectories: [URL]) -> [(path: String, fontFamily: String)] {
@@ -162,3 +179,27 @@ struct FontInfo: Equatable, Identifiable, Hashable {
     let fontFamily: String
 }
 
+
+class FontLoader: ObservableObject {
+    @Published var fontInfo: [FontInfo] = []
+    @Published var fontsLoaded: Bool = false
+    
+
+    func loadFontsFromDirectories(_ fontDirectories: [URL]) {
+        print("loadFontsFromDirectories called")
+        DispatchQueue.global(qos: .userInitiated).async {
+            var newFontInfo: [FontInfo] = []
+            
+            for directory in fontDirectories {
+                print("Loading fonts from directory: \(directory)")
+                newFontInfo += fontsInDirectory(directory: directory)
+            }
+            
+            DispatchQueue.main.async {
+                self.fontInfo = newFontInfo
+                self.fontsLoaded = true
+                print("Loaded font info: \(self.fontInfo)")
+            }
+        }
+    }
+}

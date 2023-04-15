@@ -14,113 +14,114 @@ import UserNotifications
 
 
 
-// SidebarBindings struct to hold various bindings and functions
-
-
+//MARK: - SidebarBindings struct to hold various bindings and functions
 struct SidebarView: View {
     var bindings: SidebarBindings
     @Binding var isSidebarVisible: Bool
-    
-    @State private var selectedFontFamily: String = ""
+    @Binding var isDirectoryListActive: Bool
+    @Binding private var selectedFont: String
     let fontLoader: FontLoader
-    
     var customPreviewText: Binding<String>
     @State private var fontInfos: [FontInfo] = []
     @Binding var fontInfosBinding: [FontInfo]
-   
+    @State private var isDirectoriesExpanded: Bool = true
+    @StateObject private var customDirectoriesManager = CustomDirectoriesManager()
+    @State private var fontSize: CGFloat = 20
+    @Binding var sidebarWidth: CGFloat
     
-    init(bindings: SidebarBindings, isSidebarVisible: Binding<Bool>, fontLoader: FontLoader, customPreviewText: Binding<String>) {
+    
+    
+    init(bindings: SidebarBindings, isSidebarVisible: Binding<Bool>, fontLoader: FontLoader, customPreviewText: Binding<String>, isDirectoryListActive: Binding<Bool>, selectedFont: Binding<String>, sidebarWidth: Binding<CGFloat>) {
         self.bindings = bindings
         _isSidebarVisible = isSidebarVisible
         self.fontLoader = fontLoader
         self.customPreviewText = customPreviewText
         _fontInfosBinding = bindings.fontInfo
-        
-        
-        
+        _isDirectoryListActive = isDirectoryListActive
+        _selectedFont = selectedFont
+        _sidebarWidth = sidebarWidth
         
         bindings.fontInfoManager.loadFonts(fontDirectories: bindings.fontDirectories.wrappedValue)
-        
-        
+    }
+    
+    func filteredFontInfo(_ searchText: String) -> [FontInfo] {
+        return bindings.filterFonts(searchText)
     }
     
     
-    
-    // MARK: - Main body of the SidebarView
-    
     var body: some View {
-        HStack {
-            List {
-                // Font Style section
-                Section(header: Text("Font Style")) {
-                    ForEach(FontStyle.allCases, id: \.self) { style in
-                        Button(action: {
-                            bindings.selectedStyleBinding.wrappedValue = style
-                        }) {
-                            HStack {
-                                Text(style.rawValue)
-                                Spacer()
-                                if bindings.selectedStyleBinding.wrappedValue == style {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .foregroundColor(.blue)
-                                } else {
-                                    Image(systemName: "circle")
-                                        .foregroundColor(.gray)
-                                }
-                            }
-                        }
-                        .buttonStyle(PlainButtonStyle())
-                    }
-                } //End Font Style Section
-                
-                //Font Directories Section
-                Section(header: Text("Font Directories")) {
-                    Button(action: {
-                        bindings.showOpenPanel() { newFontInfo in
-                            bindings.fontInfoManager.fontInfo = newFontInfo.map { FontInfo(path: $0.path, fontFamily: $0.fontFamily) }
-                        }
-                    }) {
-                        Image(systemName: "folder").help("Select Folder")
-                    }
-                    DirectoryList(
-                        setSearchText: { searchText in
-                            bindings.searchText.wrappedValue = searchText
-                        },
-                        systemDirectories: bindings.systemDirectories,
-                        customDirectories: bindings.customDirectories,
-                        selectedFontFamily: bindings.selectedFontFamily
-                        
-                    )
-                }// End Font Directories Section
-            }
-            .listStyle(SidebarListStyle()) // Use this to style the List as a sidebar
-            .frame(minWidth: 200) // Adjust this value to change the width of the sidebar
-        }
-        //---------
-        
         VStack {
-            HStack {
-                //Slider Font Resizer
-                Slider(value: bindings.fontSizeBinding, in: 10...50)
-                    .frame(width: 200)
-                    .padding(.left, 16)
-                
-                Text("Font size: \(Int(bindings.fontSizeBinding.wrappedValue))")
-                    .minimumScaleFactor(0.5)
-                    .padding(.top, 10)
-                    .padding(.bottom, 10)
-                //End Slider Font Resizer
-                
-                Spacer()
-                
-                //Custom Preview Text Field
-                TextField("Custom Preview Text", text: bindings.customPreviewTextBinding)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+            // Font Style section
+            ForEach(FontStyle.allCases, id: \.self) { style in
+                Button(action: {
+                    bindings.selectedStyleBinding.wrappedValue = style
+                }) {
+                    HStack {
+                        Text(style.rawValue)
+                        Spacer()
+                        if bindings.selectedStyleBinding.wrappedValue == style {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.blue)
+                        } else {
+                            Image(systemName: "circle")
+                                .foregroundColor(.gray)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 2)
                     .padding(.horizontal)
-                    .frame(width: 200)
-            } //End Custom Preview Text Field
+                    
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.top, 0.5)
+            }
             
+            Button(action: {
+                customDirectoriesManager.showDirectoryPicker()
+            }) {
+                HStack {
+                    Image(systemName: "plus.circle.fill").help("Add Custom Folder")
+                    Text("Add Custom Folder")
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 2)
+                .padding(.horizontal)
+                
+            }
+            .buttonStyle(.borderless)
+            .padding(.top, 0.5)
+            
+            Text("Directories")
+                .font(.headline)
+                .padding(.top, 8)
+                
+                
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 0) {
+                    DirectoryList(
+                        searchText: bindings.searchText,
+                        directories: bindings.systemDirectories.map { FontDirectory(path: $0.path) },
+                        isDirectoryListActive: $isDirectoryListActive,
+                        selectedFont: $selectedFont
+                    )
+                    .padding(.top, 8)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 2)
+                    .padding(.horizontal)
+                    
+                    DirectoryList(
+                        searchText: bindings.searchText,
+                        directories: bindings.customDirectories.map { FontDirectory(path: $0.path) },
+                        isDirectoryListActive: $isDirectoryListActive,
+                        selectedFont: $selectedFont
+                    )
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 2)
+                    .padding(.horizontal)
+                }
+            }
         }
     }
 }
-    
