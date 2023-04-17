@@ -50,7 +50,7 @@ struct SidebarView: View {
     
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             // Font Style section
             ForEach(FontStyle.allCases, id: \.self) { style in
                 Button(action: {
@@ -95,6 +95,8 @@ struct SidebarView: View {
             Text("Directories")
                 .font(.headline)
                 .padding(.top, 8)
+                .padding(.left, 16)
+           
                 
                 
             

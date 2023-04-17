@@ -6,10 +6,10 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>7697EC67-DA95-4D44-9E64-1A8C6DC4E96D</key>
+		<key>0E22C461-EAE4-4C33-AB04-075D57D06F4E</key>
 		<dict>
 			<key>auxiliaryLogUniqueIdentifier</key>
-			<string>EA028C5A-8C89-4443-A4AB-B905325D7C88</string>
+			<string>0BD7847F-4C30-4DA2-BA96-82AF034736DC</string>
 			<key>auxiliaryObservable</key>
 			<dict>
 				<key>highLevelStatus</key>
@@ -22,7 +22,7 @@
 			<key>domainType</key>
 			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
 			<key>fileName</key>
-			<string>Run-TypeBox-2023.04.14_15-58-43--0700.xcresult</string>
+			<string>Run-TypeBox-2023.04.17_16-06-39--0700.xcresult</string>
 			<key>hasAuxiliaryLog</key>
 			<true/>
 			<key>hasConsoleLog</key>
@@ -43,13 +43,418 @@
 			<key>signature</key>
 			<string>Run TypeBox</string>
 			<key>timeStartedRecording</key>
-			<real>703205923.07164598</real>
+			<real>703465599.84878397</real>
 			<key>timeStoppedRecording</key>
 			<real>0.0</real>
 			<key>title</key>
 			<string>Run TypeBox</string>
 			<key>uniqueIdentifier</key>
-			<string>7697EC67-DA95-4D44-9E64-1A8C6DC4E96D</string>
+			<string>0E22C461-EAE4-4C33-AB04-075D57D06F4E</string>
+		</dict>
+		<key>0F0D0FA4-EC24-420D-9751-76DD50AD485A</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>80AC8BED-043B-4F1E-BE5D-F06D743E1599</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-TypeBox-2023.04.17_16-09-05--0700.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>TypeBox project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>TypeBox</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run TypeBox</string>
+			<key>timeStartedRecording</key>
+			<real>703465745.26902997</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run TypeBox</string>
+			<key>uniqueIdentifier</key>
+			<string>0F0D0FA4-EC24-420D-9751-76DD50AD485A</string>
+		</dict>
+		<key>6BBBB3D4-2B95-45E8-B1AD-A411DC639538</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>366F48D0-AC95-4DF3-A232-7FB120D5E21C</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-TypeBox-2023.04.17_16-05-07--0700.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>TypeBox project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>TypeBox</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run TypeBox</string>
+			<key>timeStartedRecording</key>
+			<real>703465507.40941405</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run TypeBox</string>
+			<key>uniqueIdentifier</key>
+			<string>6BBBB3D4-2B95-45E8-B1AD-A411DC639538</string>
+		</dict>
+		<key>871B8377-F859-42BB-A75E-27F85C8AF234</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>A1322AA0-0CBE-427B-8D74-E5E556B789AB</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-TypeBox-2023.04.17_16-11-33--0700.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>TypeBox project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>TypeBox</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run TypeBox</string>
+			<key>timeStartedRecording</key>
+			<real>703465893.44939399</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run TypeBox</string>
+			<key>uniqueIdentifier</key>
+			<string>871B8377-F859-42BB-A75E-27F85C8AF234</string>
+		</dict>
+		<key>8BCA6EE7-B8AA-46D4-9740-9D7D0AE33743</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>D843D1F8-1D9E-4A04-9A96-850923B4E389</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-TypeBox-2023.04.17_16-14-58--0700.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>TypeBox project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>TypeBox</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run TypeBox</string>
+			<key>timeStartedRecording</key>
+			<real>703466098.93144405</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run TypeBox</string>
+			<key>uniqueIdentifier</key>
+			<string>8BCA6EE7-B8AA-46D4-9740-9D7D0AE33743</string>
+		</dict>
+		<key>AEF9F523-1D5E-41ED-9837-391F79570BF6</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>796D499D-9995-4878-B119-0866F35AEEB3</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-TypeBox-2023.04.17_16-10-29--0700.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>TypeBox project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>TypeBox</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run TypeBox</string>
+			<key>timeStartedRecording</key>
+			<real>703465829.30128002</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run TypeBox</string>
+			<key>uniqueIdentifier</key>
+			<string>AEF9F523-1D5E-41ED-9837-391F79570BF6</string>
+		</dict>
+		<key>B9E6F2B8-5A32-4A65-80A3-EC9E6E994C78</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>0A857876-6C5D-43AF-9712-FD64D4F12337</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-TypeBox-2023.04.17_16-12-31--0700.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>TypeBox project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>TypeBox</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run TypeBox</string>
+			<key>timeStartedRecording</key>
+			<real>703465951.95293701</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run TypeBox</string>
+			<key>uniqueIdentifier</key>
+			<string>B9E6F2B8-5A32-4A65-80A3-EC9E6E994C78</string>
+		</dict>
+		<key>CB85F2FD-A310-4E95-8876-BAE2125551CC</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>010190DB-9AB3-4FA7-B270-07B0205E087A</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-TypeBox-2023.04.17_16-12-13--0700.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>TypeBox project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>TypeBox</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run TypeBox</string>
+			<key>timeStartedRecording</key>
+			<real>703465933.21335006</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run TypeBox</string>
+			<key>uniqueIdentifier</key>
+			<string>CB85F2FD-A310-4E95-8876-BAE2125551CC</string>
+		</dict>
+		<key>D5B65EAB-1E77-4EFB-8EB3-9FD7A9A19D55</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>2484C566-66F1-4108-A38C-E193C3651569</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-TypeBox-2023.04.17_10-51-07--0700.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>TypeBox project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>TypeBox</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run TypeBox</string>
+			<key>timeStartedRecording</key>
+			<real>703446667.96293402</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run TypeBox</string>
+			<key>uniqueIdentifier</key>
+			<string>D5B65EAB-1E77-4EFB-8EB3-9FD7A9A19D55</string>
+		</dict>
+		<key>DF1DC6C9-206F-4915-B93A-A91B3762B86A</key>
+		<dict>
+			<key>auxiliaryLogUniqueIdentifier</key>
+			<string>C379252B-02AC-49BF-A38B-0822DE95A55E</string>
+			<key>auxiliaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>className</key>
+			<string>IDESchemeActionsInvocationRecord</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>com.apple.dt.IDE.LaunchSchemeAction</string>
+			<key>fileName</key>
+			<string>Run-TypeBox-2023.04.17_16-12-22--0700.xcresult</string>
+			<key>hasAuxiliaryLog</key>
+			<true/>
+			<key>hasConsoleLog</key>
+			<true/>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>S</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>TypeBox project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>TypeBox</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Run TypeBox</string>
+			<key>timeStartedRecording</key>
+			<real>703465942.78540206</real>
+			<key>timeStoppedRecording</key>
+			<real>0.0</real>
+			<key>title</key>
+			<string>Run TypeBox</string>
+			<key>uniqueIdentifier</key>
+			<string>DF1DC6C9-206F-4915-B93A-A91B3762B86A</string>
 		</dict>
 	</dict>
 </dict>
