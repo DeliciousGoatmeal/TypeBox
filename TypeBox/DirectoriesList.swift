@@ -27,22 +27,21 @@ struct DirectoryList: View {
     
     
     var body: some View {
-        
         ForEach(directories) { directory in
-            DisclosureGroup(directory.name) {
-                DirectoryView(
-                    // Pass currentSearchText instead of searchText
-                    directory: directory,
-                    isDirectoryListActive: $isDirectoryListActive,
-                    selectedFont: $selectedFont)
-            }
+            DirectoryView(
+                directory: directory,
+                isDirectoryListActive: $isDirectoryListActive,
+                selectedFont: $selectedFont,
+                isExpanded: true
+            )
         }
         .onChange(of: searchText) { newValue in
             if !newValue.isEmpty {
                 currentSearchText = newValue
             }
         }
-        }
+    }
+
     
     
 
@@ -66,45 +65,42 @@ struct DirectoryList: View {
 
 
 struct DirectoryView: View {
-    
-//    @Binding var searchText: String
     let directory: FontDirectory
     @Binding var isDirectoryListActive: Bool
     @Binding var selectedFont: String
+    @State private var isExpanded: Bool
     
-    
-    
-    // Show fonts in ABC order
-//    private var uniqueFilteredFonts: [FontInfo] {
-//        let filteredFonts = directory.fonts().filter {
-//            searchText.isEmpty || $0.fontFamily.localizedCaseInsensitiveContains(searchText)
-//        }
-//        let uniqueFonts = fontInfoManager.uniqueAndSortedFontInfos(filteredFonts) // Use fontInfoManager instance
-//        return uniqueFonts
-//    }
+    init(directory: FontDirectory, isDirectoryListActive: Binding<Bool>, selectedFont: Binding<String>, isExpanded: Bool = false) {
+        self.directory = directory
+        _isDirectoryListActive = isDirectoryListActive
+        _selectedFont = selectedFont
+        _isExpanded = State(initialValue: isExpanded)
+    }
     
     var body: some View {
-        //@ObservedObject var fontInfoManager: FontInfoManager
-        ScrollView {
-            VStack(alignment: .leading, spacing: 8) {
-                ForEach(directory.fonts(), id: \.id) { font in
-                    Text(font.fontFamily)
-                        .padding(.leading)
-                        .onTapGesture {
-                            selectedFont = font.fontFamily
-                            //searchText = font.fontFamily
-                            print("Clicked on font: \(selectedFont)")
-                        }
-                        .onAppear {
-                            if font.fontFamily == selectedFont {
-                                //searchText = selectedFont
-                            }
-                        }
-                }
-            }
+        DisclosureGroup(directory.name, isExpanded: $isExpanded) {
+              ScrollView {
+                  VStack(alignment: .leading, spacing: 8) {
+                      ForEach(directory.fonts(), id: \.id) { font in
+                          Text(font.fontFamily)
+                              .padding(.leading)
+                              .onTapGesture {
+                                  selectedFont = font.fontFamily
+                                  print("Clicked on font: \(selectedFont)")
+                              }
+                              .onAppear {
+                                  if font.fontFamily == selectedFont {
+                                      //searchText = selectedFont
+                                  }
+                              }
+                      }
+                  }
+              }
         }
     }
 }
+
+
 
 
 

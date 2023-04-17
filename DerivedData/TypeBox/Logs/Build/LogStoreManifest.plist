@@ -6,7 +6,7 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>EA028C5A-8C89-4443-A4AB-B905325D7C88</key>
+		<key>2484C566-66F1-4108-A38C-E193C3651569</key>
 		<dict>
 			<key>className</key>
 			<string>IDEActivityLogSection</string>
@@ -15,7 +15,41 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>EA028C5A-8C89-4443-A4AB-B905325D7C88.xcactivitylog</string>
+			<string>2484C566-66F1-4108-A38C-E193C3651569.xcactivitylog</string>
+			<key>hasPrimaryLog</key>
+			<true/>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>E</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>TypeBox project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>TypeBox</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Build TypeBox</string>
+			<key>timeStartedRecording</key>
+			<real>703446667.96311903</real>
+			<key>timeStoppedRecording</key>
+			<real>703446669.55514205</real>
+			<key>title</key>
+			<string>Build TypeBox</string>
+			<key>uniqueIdentifier</key>
+			<string>2484C566-66F1-4108-A38C-E193C3651569</string>
+		</dict>
+		<key>366F48D0-AC95-4DF3-A232-7FB120D5E21C</key>
+		<dict>
+			<key>className</key>
+			<string>IDEActivityLogSection</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>366F48D0-AC95-4DF3-A232-7FB120D5E21C.xcactivitylog</string>
 			<key>hasPrimaryLog</key>
 			<true/>
 			<key>primaryObservable</key>
@@ -32,13 +66,13 @@
 			<key>signature</key>
 			<string>Build TypeBox</string>
 			<key>timeStartedRecording</key>
-			<real>703205923.07172096</real>
+			<real>703465507.43036103</real>
 			<key>timeStoppedRecording</key>
-			<real>703205924.61936498</real>
+			<real>703465512.19797802</real>
 			<key>title</key>
 			<string>Build TypeBox</string>
 			<key>uniqueIdentifier</key>
-			<string>EA028C5A-8C89-4443-A4AB-B905325D7C88</string>
+			<string>366F48D0-AC95-4DF3-A232-7FB120D5E21C</string>
 		</dict>
 	</dict>
 </dict>
