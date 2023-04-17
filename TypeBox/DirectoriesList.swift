@@ -78,10 +78,10 @@ struct DirectoryView: View {
     }
     
     var body: some View {
-        DisclosureGroup(directory.name, isExpanded: $isExpanded) {
+        DisclosureGroup(directory.path, isExpanded: $isExpanded) {
               ScrollView {
                   VStack(alignment: .leading, spacing: 8) {
-                      ForEach(directory.fonts(), id: \.id) { font in
+                      ForEach(uniqueFontFamilies(directory.fonts()).sorted(by: { $0.fontFamily < $1.fontFamily }), id: \.id) { font in
                           Text(font.fontFamily)
                               .padding(.leading)
                               .onTapGesture {
@@ -98,7 +98,22 @@ struct DirectoryView: View {
               }
         }
     }
+    
+    func uniqueFontFamilies(_ fonts: [FontInfo]) -> [FontInfo] {
+        var uniqueFontFamilies = [FontInfo]()
+        var fontFamilyNames = Set<String>()
+        
+        for font in fonts {
+            if !fontFamilyNames.contains(font.fontFamily) {
+                uniqueFontFamilies.append(font)
+                fontFamilyNames.insert(font.fontFamily)
+            }
+        }
+        
+        return uniqueFontFamilies
+    }
 }
+
 
 
 
