@@ -114,11 +114,12 @@ struct ContentView:
         }()
         
         systemDirectories = defaultDirectories
+        self.customDirectories = customDirectories
         fontDirectories = (defaultDirectories + customDirectories).sorted(by: { $0.path < $1.path })
         
         fontLoader.loadFontsFromDirectories(fontDirectories)
     }
-    
+
     private func showCustomDirectoryOpenPanel() {
         print("Load NSOpenPanel")
         let openPanel = NSOpenPanel()
@@ -273,7 +274,9 @@ struct ContentView:
                     customPreviewText: $customPreviewText,
                     isDirectoryListActive: $isDirectoryListActive,
                     selectedFont: $selectedFont,
-                    sidebarWidth: $sidebarWidth
+                    sidebarWidth: $sidebarWidth,
+                    systemDirectories: systemDirectories,
+                    customDirectories: customDirectories
                 )
             }
             

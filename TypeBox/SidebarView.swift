@@ -28,10 +28,12 @@ struct SidebarView: View {
     @StateObject private var customDirectoriesManager = CustomDirectoriesManager()
     @State private var fontSize: CGFloat = 20
     @Binding var sidebarWidth: CGFloat
+    var systemDirectories: [URL]
+    var customDirectories: [URL]
     
     
     
-    init(bindings: SidebarBindings, isSidebarVisible: Binding<Bool>, fontLoader: FontLoader, customPreviewText: Binding<String>, isDirectoryListActive: Binding<Bool>, selectedFont: Binding<String>, sidebarWidth: Binding<CGFloat>) {
+    init(bindings: SidebarBindings, isSidebarVisible: Binding<Bool>, fontLoader: FontLoader, customPreviewText: Binding<String>, isDirectoryListActive: Binding<Bool>, selectedFont: Binding<String>, sidebarWidth: Binding<CGFloat>, systemDirectories: [URL], customDirectories: [URL]) {
         self.bindings = bindings
         _isSidebarVisible = isSidebarVisible
         self.fontLoader = fontLoader
@@ -40,6 +42,8 @@ struct SidebarView: View {
         _isDirectoryListActive = isDirectoryListActive
         _selectedFont = selectedFont
         _sidebarWidth = sidebarWidth
+        self.systemDirectories = systemDirectories
+        self.customDirectories = customDirectories
         
         bindings.fontInfoManager.loadFonts(fontDirectories: bindings.fontDirectories.wrappedValue)
     }
@@ -51,6 +55,11 @@ struct SidebarView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
+            // Directory section
+            //            ForEach((systemDirectories + customDirectories).map { FontDirectory(path: $0.path) }, id: \.path) { directory in
+            //                DirectoryView(directory: directory, isDirectoryListActive: $isDirectoryListActive, selectedFont: $selectedFont)
+            //            }
+            
             // Font Style section
             ForEach(FontStyle.allCases, id: \.self) { style in
                 Button(action: {
@@ -76,6 +85,7 @@ struct SidebarView: View {
                 .padding(.top, 0.5)
             }
             
+            
             Button(action: {
                 customDirectoriesManager.showDirectoryPicker()
             }) {
@@ -96,32 +106,40 @@ struct SidebarView: View {
                 .font(.headline)
                 .padding(.top, 8)
                 .padding(.left, 16)
-           
-                
-                
+            
+            
+            
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 0) {
-                    DirectoryList(
-                        searchText: bindings.searchText,
-                        directories: bindings.systemDirectories.map { FontDirectory(path: $0.path) },
-                        isDirectoryListActive: $isDirectoryListActive,
-                        selectedFont: $selectedFont
-                    )
-                    .padding(.top, 8)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 2)
-                    .padding(.horizontal)
-                    
-                    DirectoryList(
-                        searchText: bindings.searchText,
-                        directories: bindings.customDirectories.map { FontDirectory(path: $0.path) },
-                        isDirectoryListActive: $isDirectoryListActive,
-                        selectedFont: $selectedFont
-                    )
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 2)
-                    .padding(.horizontal)
+                    //                    DirectoryList(
+                    //                        searchText: bindings.searchText,
+                    //                        directories: bindings.systemDirectories.map { FontDirectory(path: $0.path) },
+                    //                        isDirectoryListActive: $isDirectoryListActive,
+                    //                        selectedFont: $selectedFont
+                    //                    )
+                    //                    .padding(.top, 8)
+                    //                    .frame(maxWidth: .infinity, alignment: .leading)
+                    //                    .padding(.vertical, 2)
+                    //                    .padding(.horizontal)
+                    //
+                    //                    DirectoryList(
+                    //                        searchText: bindings.searchText,
+                    //                        directories: bindings.customDirectories.map { FontDirectory(path: $0.path) },
+                    //                        isDirectoryListActive: $isDirectoryListActive,
+                    //                        selectedFont: $selectedFont
+                    //                    )
+                    //                    .frame(maxWidth: .infinity, alignment: .leading)
+                    //                    .padding(.vertical, 2)
+                    //                    .padding(.horizontal)
+                    //                }
+                    ForEach((systemDirectories + customDirectories).map { FontDirectory(path: $0.path) }, id: \.path) { directory in
+                        DirectoryView(directory: directory, isDirectoryListActive: $isDirectoryListActive, selectedFont: $selectedFont)
+                            .padding(.top, 8)
+                            .padding(.vertical, 2)
+                            .padding(.horizontal)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
             }
         }
